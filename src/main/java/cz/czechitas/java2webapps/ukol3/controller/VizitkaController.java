@@ -5,6 +5,7 @@ import cz.czechitas.java2webapps.ukol3.service.VizitkaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,15 +25,41 @@ public class VizitkaController {
 
   @GetMapping("/")
   public ModelAndView seznam() {
-    ModelAndView result = new ModelAndView("seznam");
-    result.addObject("seznam", service.getAll());
-    return result;
+    ModelAndView modelAndView = new ModelAndView("seznam");
+    modelAndView.addObject("vizitky", service.getAll());
+    return modelAndView;
   }
 
   @GetMapping("/detail/{id}")
   public ModelAndView detail(@PathVariable int id) {
+    ModelAndView modelAndView = new ModelAndView("detail");
+    modelAndView.addObject("vizitka", service.getById(id));
+    return modelAndView;
+  }
+
+  @GetMapping(value = "/nova", params = "query")
+  public ModelAndView nova(String query) {
     ModelAndView result = new ModelAndView("detail");
-    result.addObject("vizitka", service.getById(id));
+    result.addObject("vizitky", service.getByName(query));
+    result.addObject("query", query);
     return result;
   }
+
+  @PostMapping(path = "/nova")
+  public String append(Vizitka vizitka){
+    service.append(vizitka);
+    return "redirect:/ ";
+  }
+
+  @PostMapping(path = "/delete")
+  public String delete(int id){
+    service.deleteById(id);
+    return "redirect:/ ";
+  }
+
+  @GetMapping("/test")
+  public String redirect() {
+    return "redirect:/test-po-presmerovani";
+  }
+
 }
