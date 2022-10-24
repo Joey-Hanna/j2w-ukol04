@@ -20,13 +20,6 @@ public class VizitkaService {
         return seznamVizitek;
     }
 
-
-    public List<Vizitka> getByName(String query) {
-        return seznamVizitek.stream()
-                .filter(vizitka -> vizitka.getJmeno().contains(query))
-                .toList();
-    }
-
     public Vizitka getById(int id) {
         return seznamVizitek.get(id);
     }
