@@ -37,13 +37,11 @@ public class VizitkaController {
     return modelAndView;
   }
 
-  @GetMapping(value = "/nova", params = "query")
-  public ModelAndView nova(String query) {
-    ModelAndView result = new ModelAndView("detail");
-    result.addObject("vizitky", service.getByName(query));
-    result.addObject("query", query);
-    return result;
-  }
+ @GetMapping("/nova")
+ public ModelAndView nova() {
+    ModelAndView modelAndView = new ModelAndView("seznam");
+    modelAndView.addObject("nova", service.append());
+ }
 
   @PostMapping(path = "/nova")
   public String append(Vizitka vizitka){
@@ -57,9 +55,6 @@ public class VizitkaController {
     return "redirect:/ ";
   }
 
-  @GetMapping("/test")
-  public String redirect() {
-    return "redirect:/test-po-presmerovani";
-  }
+
 
 }
